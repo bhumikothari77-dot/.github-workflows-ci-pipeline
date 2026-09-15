@@ -29,5 +29,5 @@ on:
          {{inputs.environment}}"
                       - name: Check Docker token
                          run: echo "Docker token is set:
-                         ${{ secrets.docker_token !=''}}
-         {{
+                          ${{ secrets.docker_token !=''}}"
+         
