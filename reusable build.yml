@@ -1,67 +1,30 @@
-name: Reusable Build
+name: Reusable Build Workflow
 
 on:
- workflow_call:
-  inputs:
-    app_name:
-    required: true
-    type: string
-    environment:
-       required:
-       type: string
-       default: staging
+  workflow_call:
+    inputs:
+      app_name:
+        required: true
+        type: string
+      environment:
+        required: true
+        type: string
+        default: 'staging'
+    secrets:
+      docker_token:
+        required: true
 
-       secrets:
-         docker_token:
-            required: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-            jobs:
-              build:
-                runs_on: ubuntu-latest
-
-                steps:
-                 - name: Checkout code
-                    uses: actions/checkout@v4
-
-                    - name: Build application 
-                       run: echo "Building $
-         {{inputs.app_name}} for $
-         {{inputs.environment}}"
-                      - name: Check Docker token
-                         run: echo "Docker token is set:
-                          ${{ secrets.docker_token !=''}}"
-         name: Reusable Build
-
-on:
- workflow_call:
-  inputs:
-    app_name:
-    required: true
-    type: string
-    environment:
-       required:
-       type: string
-       default: staging
-
-       secrets:
-         docker_token:
-            required: true
-
-            jobs:
-              build:
-                runs_on: ubuntu-latest
-
-                steps:
-                 - name: Checkout code
-                    uses: actions/checkout@v4
-
-                    - name: Build application 
-                       run: echo "Building $
-         {{inputs.app_name}} for $
-         {{inputs.environment}}"
-                      - name: Check Docker token
-                         run: echo "Docker token is set:
-                          ${{ secrets.docker_token !=''}}"
+      - name: Print Build Details
+        run: |
+          echo "Building ${{ inputs.app_name }} for ${{ inputs.environment }}"
+          echo "Docker token is set: ${{ secrets.docker_token != '' }}"
          
   
          
